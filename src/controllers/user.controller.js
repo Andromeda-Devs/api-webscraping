@@ -1,6 +1,6 @@
+import { v4 as uuidv4 } from 'uuid';
 import User from "../models/User";
 import Role from "../models/Role";
-
 export const createUser = async (req, res) => {
   try {
     const { username, email, password, roles } = req.body;
@@ -13,6 +13,7 @@ export const createUser = async (req, res) => {
       email,
       password,
       roles: rolesFound.map((role) => role._id),
+      api_key: uuidv4(),
     });
 
     // encrypting password
@@ -29,6 +30,9 @@ export const createUser = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
+    return  res.status(500).json({
+      ...error
+    });
   }
 };
 

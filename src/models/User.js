@@ -15,12 +15,23 @@ const productSchema = new Schema(
       type: String,
       required: true,
     },
+    rut:{
+      type: String,
+      required: true,
+    },
+    password_eboleta:{
+      type: String,
+      required: true,
+    },
     roles: [
       {
         type: Schema.Types.ObjectId,
         ref: "Role",
       },
     ],
+    api_key: {
+      type: String,
+    }
   },
   {
     timestamps: true,
