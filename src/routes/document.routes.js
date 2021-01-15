@@ -8,8 +8,13 @@ router.get("/", documentCtrl.get);
 
 router.get("/:documentId", documentCtrl.getDocumentById);
 
+router.post("/create-eboleta",
+// [authJwt.verifyToken],
+  documentCtrl.refreshDocuments
+);
+
 router.post(
-  "/refresh-documents",
+  "/refresh",
   [authJwt.verifyToken, authJwt.isModerator],
   documentCtrl.refreshDocuments
 );

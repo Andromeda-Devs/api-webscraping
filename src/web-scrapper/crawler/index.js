@@ -1,0 +1,152 @@
+
+import puppeteer  from 'puppeteer';
+
+export class Crawler {
+
+    constructor(config){
+
+        const {url} = config;
+        
+        this.url = url;
+
+    }
+    
+    async initialize(){
+
+        const url = this.url;
+
+        const browser = await puppeteer.launch({ headless : true});
+    
+        const context = await browser.defaultBrowserContext();
+    
+        context.overridePermissions( url , [ "notifications" ] );
+
+        let page = await browser.newPage();
+    
+        await page.goto(url);
+
+        this._page = page;
+    
+    }
+
+    async fill(query,value){
+
+        await this._page.waitForSelector(query);
+    
+        await this._page.type(query,value);
+        
+    }
+
+    async clickByText(query,tagName = "button"){
+
+        const [button] = await this._page.$x(`//${tagName}[contains( . , '${query}')]`);
+    
+        if(button){
+            
+            await button.click();
+
+            return button;
+    
+        }
+    
+        return;
+    
+    }
+
+    async clickBy( config ){
+
+        const { text , tagName = 'div', ...rest } = config;
+
+        const params = Object
+            .entries(rest)
+            .map( ([attribute,value]) => `@${attribute}='${value}'` );
+
+        let paramsAsText = params.length 
+            ? "and " + params.join(" and ")
+            : ``
+
+        console.log({paramsAsText})
+
+        const [selection] = await this._page.$x(`//${tagName}[contains( . , '${text}') ${paramsAsText} ]`);
+    
+        if(selection){
+            
+            await selection.click();
+
+            return selection;
+    
+        }
+    
+        return;
+
+    }
+
+    async waitForButtonContent(query){
+
+        const button = await this._page.waitForFunction(
+            (query) => {
+
+                const buttons = document.getElementsByTagName('button');
+
+                let buttonFound = null;
+
+                for( let _i = 0; _i < buttons.length; _i += 1 ){
+
+                    if( buttons[_i].textContent.includes(query) ){
+
+                        buttonFound = buttons[_i];
+
+                    }
+
+                }
+
+                return buttonFound;
+
+            },
+            {},
+            query
+        );
+
+        return button;
+
+    }
+
+    async waitForContent(query,tagName){
+
+        const node = await this._page.waitForFunction(
+            (query,tagName) => {
+
+                const tags = document.getElementsByTagName(tagName);
+
+                let buttonFound = null;
+
+                for( let _i = 0; _i < tags.length; _i += 1 ){
+
+                    if( tags[_i].textContent.includes(query) ){
+
+                        buttonFound = tags[_i];
+
+                    }
+
+                }
+
+                return buttonFound;
+
+            },
+            {},
+            query,
+            tagName
+        );
+
+        return node;
+
+    }
+
+    get page(){
+
+        return this._page;
+
+    }
+
+}
+
