@@ -33,7 +33,7 @@ export const getDocumentByDates = async (req, res) => {
 };
 
 export const createDocuments = async (req, res) => {
-  const {amount,type } = req.body;
+  const {amount,type, receiver} = req.body;
   if(!amount || !type ) return res.status(404).json({ message:"amount or type invalid" });
   await eboleta.login({...req.body}); // TODO user and password get for database
   const url = await eboleta.emitTicket({

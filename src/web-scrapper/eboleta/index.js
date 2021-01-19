@@ -1,5 +1,7 @@
 import { Crawler } from '../crawler';
 import { splitNumber  } from '../utils';
+import { ticketType  } from '../constants';
+
 
 class Eboleta {
 
@@ -11,14 +13,14 @@ class Eboleta {
         this.affectBallot = {
     
             id: 'list-item-166-0',
-            text: 'Boleta afecta'
+            text: ticketType.boletaAfecta,
     
         }
     
         this.exentBallot = {
     
             id: 'list-item-169-1',
-            text: 'Boleta exenta'
+            text: ticketType.boletaExtensa,
     
         }
     
@@ -122,12 +124,12 @@ class Eboleta {
 
         switch(ballotType){
 
-            case 'Boleta Afecta':{
+            case ticketType.boletaAfecta:{
                 await this.crawler.clickBy( this.affectBallot );
                 return
             }
 
-            case 'Boleta Exenta':{
+            case ticketType.boletaExtensa:{
                 await this.crawler.clickBy( this.exentBallot );
                 return
             }
