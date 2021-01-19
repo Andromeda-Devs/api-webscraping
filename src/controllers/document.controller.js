@@ -37,9 +37,9 @@ export const createDocuments = async (req, res) => {
   if(!amount || !type ) return res.status(404).json({ message:"amount or type invalid" });
   await eboleta.login({...req.body}); // TODO user and password get for database
   const url = await eboleta.emitTicket({
-      amount: 78,
-      type: 'Boleta Afecta', //Refactor code, for constants, evit typo
-      receiver: {
+      amount,
+      type, //Refactor code, for constants, evit typo, Boleta Afecta
+      receiver: { // send to body 
           rut: '12345-6',
           name: 'Jesus Ortiz',
           address: 'Unare',
