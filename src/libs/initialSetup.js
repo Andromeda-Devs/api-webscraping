@@ -24,7 +24,7 @@ export const createRoles = async () => {
   }
 };
 
-export const createAdmin = async () => {
+/*export const createAdmin = async () => {
   // check for an existing admin user
   const user = await User.findOne({ email: "admin@localhost" });
   // get roles _id
@@ -40,4 +40,4 @@ export const createAdmin = async () => {
     });
     console.log('Admin User Created!')
   }
-};
+};*/

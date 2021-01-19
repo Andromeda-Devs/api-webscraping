@@ -1,4 +1,3 @@
-
 import puppeteer  from 'puppeteer';
 
 export class Crawler {
@@ -55,20 +54,32 @@ export class Crawler {
 
     async clickBy( config ){
 
-        const { text , tagName = 'div', ...rest } = config;
+        let selection = null;
 
-        const params = Object
-            .entries(rest)
-            .map( ([attribute,value]) => `@${attribute}='${value}'` );
+        if('selector' in config){
 
-        let paramsAsText = params.length 
-            ? "and " + params.join(" and ")
-            : ``
+            selection = await this._page.$(config.selector);
 
-        console.log({paramsAsText})
+        }else {
 
-        const [selection] = await this._page.$x(`//${tagName}[contains( . , '${text}') ${paramsAsText} ]`);
+            const { text , tagName = 'div', ...rest } = config;
+
+            const params = Object
+                .entries(rest)
+                .map( ([attribute,value]) => `@${attribute}='${value}'` );
+
+            let paramsAsText = params.length 
+                ? "and " + params.join(" and ")
+                : ``
+
+            console.log({paramsAsText})
+
+            const [foundTag] = await this._page.$x(`//${tagName}[contains( . , '${text}') ${paramsAsText} ]`);
+
+            selection = foundTag;
+        }
     
+
         if(selection){
             
             await selection.click();
@@ -142,6 +153,12 @@ export class Crawler {
 
     }
 
+    async sleep( ms = 1000 ){
+
+        await this._page.waitForTimeout(ms);
+
+    }
+
     get page(){
 
         return this._page;
@@ -149,4 +166,5 @@ export class Crawler {
     }
 
 }
+
 

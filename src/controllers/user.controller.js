@@ -38,4 +38,6 @@ export const createUser = async (req, res) => {
 
 export const getUsers = async (req, res) => {};
 
-export const getUser = async (req, res) => {};
+export const getUser = async (req, res) => {
+  res.json("hola");
+};

@@ -1,5 +1,5 @@
 import { Document,User } from "../models";
-import * as eboletaPae from "../web-scrapper";
+import { eboleta } from "../web-scrapper/eboleta";
 export const refreshDocuments = async (req, res) => {
   // TODO:
   /**
@@ -33,21 +33,21 @@ export const getDocumentByDates = async (req, res) => {
 };
 
 export const createDocuments = async (req, res) => {
-
-  const user = await User.findOne({ username : "admin"});
-
-  const eboleta = await ebolotaPage.create({ 
-    user: user.rut,
-    password: user.passwordEboleta
-
-  });
-
-  //await eboleta.login();
-  
-  //const { ticket } = eboleta.emitTicket();
-
+  const {amount,type } = req.body;
+  if(!amount || !type ) return res.status(404).json({ message:"amount or type invalid" });
+  await eboleta.login({...req.body}); // TODO user and password get for database
+  const url = await eboleta.emitTicket({
+      amount: 78,
+      type: 'Boleta Afecta', //Refactor code, for constants, evit typo
+      receiver: {
+          rut: '12345-6',
+          name: 'Jesus Ortiz',
+          address: 'Unare',
+          email: 'jesus@gmail.com'
+      }
+  });  
   res.status(200).json(url);
-
+ 
 };
 
 export const getDocumentById = async (req, res) => {
