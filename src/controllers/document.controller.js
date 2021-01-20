@@ -1,5 +1,10 @@
 import { Document,User } from "../models";
 import { eboleta } from "../web-scrapper/eboleta";
+
+import {
+  getTickets
+} from '../web-scrapper/http';
+
 export const refreshDocuments = async (req, res) => {
   // TODO:
   /**
@@ -19,16 +24,22 @@ export const refreshDocuments = async (req, res) => {
   
 };
 export const getDocumentByDates = async (req, res) => {
-  const { init, final } = req.params;
-  
-  const documents = await Document.find({
-    date : {
-      $gte: init ? new Date(init): null,
-      $lt:  final ? new Date(final): new Date(),
-    }
+
+  const { from , to } = req.params;
+
+  const tickets = await getTickets({
+
+    taxpayer: "77022026",
+    from: "2021-01-19",
+    to: "2021-01-19"
+
   });
 
-  res.status(200).json(documents);
+  res.status(200).json({
+
+    tickets
+
+  });
 
 };
 

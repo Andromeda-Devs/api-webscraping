@@ -5,9 +5,13 @@ import * as documentCtrl from "../controllers/document.controller";
 import { authJwt } from "../middlewares";
 
 
-router.get("/:documentId", documentCtrl.getDocumentById);
+router.get("/tickets", documentCtrl.getDocumentByDates);
 
 router.post("/create-eboleta", documentCtrl.createDocuments);
+
+router.get("/:documentId", documentCtrl.getDocumentById);
+
+
 
 router.post(
   "/refresh",
