@@ -9,7 +9,7 @@ router.get("/tickets", documentCtrl.getDocumentByDates);
 
 router.post("/create-eboleta", documentCtrl.createDocuments);
 
-router.get("/:documentId", documentCtrl.getDocumentById);
+//router.get("/:documentId", documentCtrl.getDocumentById);
 
 
 

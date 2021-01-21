@@ -1,7 +1,11 @@
 import axios from 'axios';
 import assert from 'assert';
 
-import * as eboletaEndpoints from '../constants';
+import {
+
+    HistoryEndpoint
+
+} from '../constants';
 
 const defaultsParams = {
     filtros: "[]",
@@ -48,11 +52,19 @@ export const getTickets = async (config = {}) => {
         )
 
         const res = await axios({
-            url: eboletaEndpoints.historyEndpoint, //creo que se puede mejorar
+            url: HistoryEndpoint, //creo que se puede mejorar
             params
         });
 
-        return res.data.reporte;
+        const tickets = res.data.reporte;
+
+        if( Array.isArray(tickets) && invoice){
+
+            return tickets.find( ticket => parseInt(ticket.folio) === parseInt(invoice) );
+
+        };
+
+        return tickets;
     
     }catch(err){
 

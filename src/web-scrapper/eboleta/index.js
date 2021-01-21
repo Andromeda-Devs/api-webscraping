@@ -2,42 +2,44 @@ import { Crawler } from '../crawler';
 import { splitNumber  } from '../utils';
 import { ticketType  } from '../constants';
 
-
 class Eboleta {
 
-
     constructor(){
+
         this.userInput = "#input-14";
         this.passwordInput = "#input-15";
         this.loginErrorMessage = `Unauthenticated access is not supported for this identity pool`;
+
         this.affectBallot = {
-    
+
             id: 'list-item-166-0',
-            text: ticketType.boletaAfecta,
-    
+            text: 'Boleta afecta'
+
         }
-    
+
         this.exentBallot = {
-    
+
             id: 'list-item-169-1',
-            text: ticketType.boletaExtensa,
-    
+            text: 'Boleta exenta'
+
         }
-    
+
         this.url = 'https://eboleta.sii.cl/';
+
         this.crawler = new Crawler({ 
             url: this.url
         });
 
     }
+
     async login ({
 
         user,
         password
 
     }){
-        try {
-            this.user = user;
+
+        this.user = user;
         this.password = password;
 
         await this.crawler.initialize();
@@ -48,7 +50,11 @@ class Eboleta {
 
                 const res = req.response();
                 const text = await res.text();
-                text.includes( this.loginErrorMessage );
+                const isAuthError = text.includes( this.loginErrorMessage );
+
+                //if(isAuthError) 
+                    //throw new Error('User or password are incorrect');
+
             }
 
         });
@@ -67,17 +73,17 @@ class Eboleta {
     
         await this.crawler.clickByText("Ingresar");
         await this.crawler.page.waitForSelector(".v-main__wrap");
-        } catch (error) {
-            return error;   
-        }
+    
     }
 
     async emitTicket({ 
         amount ,
-        type , 
+        type = 'Boleta Afecta' , 
         receiver, 
         detail 
     }){
+
+        //presses eboleta page num pad
         await this.pressNumpad( amount );
 
         await this.crawler.sleep();
@@ -97,9 +103,14 @@ class Eboleta {
         //Fills receiver input if reciver is defined
         await this.fillReceiverFormIfNeeded( receiver );
 
+        await this.crawler.sleep();
+
+        await this.fillDetailFormIfNeeded( detail );
+
         const downloadButton = await this.getDownloadButton();
 
         const ticketHref = await downloadButton.evaluate( node => node.getAttribute('href') );
+
         return ticketHref;
 
     }
@@ -124,12 +135,12 @@ class Eboleta {
 
         switch(ballotType){
 
-            case ticketType.boletaAfecta:{
+            case 'Boleta Afecta':{
                 await this.crawler.clickBy( this.affectBallot );
                 return
             }
 
-            case ticketType.boletaExtensa:{
+            case 'Boleta Exenta':{
                 await this.crawler.clickBy( this.exentBallot );
                 return
             }
@@ -156,6 +167,36 @@ class Eboleta {
 
         return downloadButton;
 
+    }
+
+    async fillDetailFormIfNeeded(detail){
+
+        if(detail){
+
+            const detailSwitchSelector = '#app > div.v-dialog__content.v-dialog__content--active > div > div.v-card.v-sheet.theme--light > div.v-card__text > div > v-template:nth-child(1) > div:nth-child(5) > div > div'
+
+            const detailInput = "#input-133";
+            const detailInputSecond = "#input-130";
+
+            await this.crawler.clickBy({
+
+                selector: detailSwitchSelector
+
+            });
+
+            await this.crawler.sleep();
+
+            await this.crawler.fill(
+                detailInput,
+                detail
+            )
+
+            await this.crawler.fill(
+                detailInputSecond,
+                detail
+            )
+
+        }
     }
 
     async fillReceiverFormIfNeeded(receiver){
