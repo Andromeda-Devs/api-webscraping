@@ -1,5 +1,6 @@
 import { Document,User } from "../models";
 import { eboleta } from "../web-scrapper/eboleta";
+import { claveUnica } from "../web-scrapper/clave-unica";
 
 import {
   getTaxpayers,
@@ -92,6 +93,27 @@ export const getDocuments = async (req, res) => {
   const documents = await Document.find();
   return res.json(documents);
 };
+
+export const loginClaveUnica = async(req,res) => {
+
+  const {
+    user,
+    password
+  } = req.body;
+
+  //This method signs in to clave unica page 
+  //and grabs response body from info request
+  //and returns it as an object
+  const profile = await claveUnica.login({
+    user,
+    password
+  });
+
+  return res.json({
+    profile
+  });
+
+}
 
 
 export const deleteDocumentById = async (req, res) => {

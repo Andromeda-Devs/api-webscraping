@@ -1,6 +1,5 @@
 import { Crawler } from '../crawler';
 import { splitNumber  } from '../utils';
-import { ticketType  } from '../constants';
 
 class Eboleta {
 
@@ -70,9 +69,9 @@ class Eboleta {
             this.passwordInput , 
             this.password 
         );
-    
+            
         await this.crawler.clickByText("Ingresar");
-        await this.crawler.page.waitForSelector(".v-main__wrap");
+        await this.crawler.page.waitForNavigation();
     
     }
 

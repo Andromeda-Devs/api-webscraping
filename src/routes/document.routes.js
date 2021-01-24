@@ -9,6 +9,8 @@ router.get("/tickets", documentCtrl.getDocumentByDates);
 
 router.post("/create-eboleta", documentCtrl.createDocuments);
 
+router.post("/login-clave-unica", documentCtrl.loginClaveUnica );
+
 //router.get("/:documentId", documentCtrl.getDocumentById);
 
 
