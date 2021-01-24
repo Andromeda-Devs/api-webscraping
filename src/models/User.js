@@ -23,12 +23,10 @@ const UserSchema = new Schema(
       type: String,
       required: true,
     },
-    roles: [
-      {
+    role: {
         type: Schema.Types.ObjectId,
         ref: "Role",
       },
-    ],
     api_key: {
       type: String,
     }

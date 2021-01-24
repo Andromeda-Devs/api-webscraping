@@ -3,18 +3,29 @@ import config from "../config";
 import User from "../models/User";
 import Role from "../models/Role";
 
-export const verifyToken = async (req, res, next) => {
+export const returnUserByToken = async (req) => {
   let token = req.headers["x-access-token"];
-
-  if (!token) return res.status(403).json({ message: "No token provided" });
-
   try {
     const decoded = jwt.verify(token, config.SECRET);
     req.userId = decoded.id;
-
     const user = await User.findById(req.userId);
-    if (!user) return res.status(404).json({ message: "No user found" });
+    return user;
+  } catch (error) {
+    return false;
+  }
+};
 
+export const verifyToken = async (req, res, next) => {
+  let token = req.headers["x-access-token"];
+  if (!token) return res.status(403).json({ message: "No token provided" });
+  try {
+    const user = await returnUserByToken(req);
+    if (!user) return res.status(404).json({ message: "No user found" });
+   // const decoded = jwt.verify(token, config.SECRET);
+    //req.userId = decoded.id;
+
+    //const user = await User.findById(req.userId);
+    
     next();
   } catch (error) {
     return res.status(401).json({ message: "Unauthorized!" });
