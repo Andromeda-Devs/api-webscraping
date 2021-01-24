@@ -6,9 +6,11 @@ import { authJwt } from "../middlewares";
 
 
 router.get("/tickets", documentCtrl.getDocumentByDates);
+router.get("/taxprayers", documentCtrl.getUserTaxpayers);
 
 router.post("/create-eboleta", documentCtrl.createDocuments);
 
+<<<<<<< HEAD
 router.post("/login-clave-unica", documentCtrl.loginClaveUnica );
 
 //router.get("/:documentId", documentCtrl.getDocumentById);
@@ -27,4 +29,6 @@ router.delete(
   documentCtrl.deleteDocumentById
 );
 
+=======
+>>>>>>> 70c04a7f42675e205f3a6275d70d3d970fdcc8c5
 export default router;

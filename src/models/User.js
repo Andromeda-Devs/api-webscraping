@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 import bcrypt from "bcryptjs";
 
-const productSchema = new Schema(
+const UserSchema = new Schema(
   {
     username: {
       type: String,
@@ -23,12 +23,10 @@ const productSchema = new Schema(
       type: String,
       required: true,
     },
-    roles: [
-      {
+    role: {
         type: Schema.Types.ObjectId,
         ref: "Role",
       },
-    ],
     api_key: {
       type: String,
     }
@@ -39,13 +37,13 @@ const productSchema = new Schema(
   }
 );
 
-productSchema.statics.encryptPassword = async (password) => {
+UserSchema.statics.encryptPassword = async (password) => {
   const salt = await bcrypt.genSalt(10);
   return await bcrypt.hash(password, salt);
 };
 
-productSchema.statics.comparePassword = async (password, receivedPassword) => {
+UserSchema.statics.comparePassword = async (password, receivedPassword) => {
   return await bcrypt.compare(password, receivedPassword)
 }
 
-export default model("User", productSchema);
+export default model("User", UserSchema);

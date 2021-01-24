@@ -1,29 +1,27 @@
 import User from "../models/User";
 import Role from "../models/Role";
-
+import { v4 as uuidv4 } from "uuid";
 import jwt from "jsonwebtoken";
 import config from "../config";
 
 export const signUp = async (req, res) => {
   try {
     // Getting the Request Body
-    const { username, email, password, roles } = req.body;
+    const {username, email, password, password_eboleta ,rut } = req.body;
     // Creating a new User Object
     const newUser = new User({
       username,
       email,
+      password_eboleta,
+      rut,
+      api_key: uuidv4(),
       password: await User.encryptPassword(password),
     });
 
-    // checking for roles
-    if (req.body.roles) {
-      const foundRoles = await Role.find({ name: { $in: roles } });
-      newUser.roles = foundRoles.map((role) => role._id);
-    } else {
-      const role = await Role.findOne({ name: "user" });
-      newUser.roles = [role._id];
-    }
-
+ 
+    const role = await Role.findOne({ name: "user" });
+     newUser.role = role._id;
+    
     // Saving the User Object in Mongodb
     const savedUser = await newUser.save();
 
@@ -32,7 +30,7 @@ export const signUp = async (req, res) => {
       expiresIn: 86400, // 24 hours
     });
 
-    return res.status(200).json({ token });
+    return res.status(200).json({ token, newUser: newUser._doc });
   } catch (error) {
     console.log(error);
     return res.status(500).json(error);
