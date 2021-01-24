@@ -6,23 +6,8 @@ import { authJwt } from "../middlewares";
 
 
 router.get("/tickets", documentCtrl.getDocumentByDates);
+router.get("/taxprayers", documentCtrl.getUserTaxpayers);
 
 router.post("/create-eboleta", documentCtrl.createDocuments);
-
-//router.get("/:documentId", documentCtrl.getDocumentById);
-
-
-
-router.post(
-  "/refresh",
-  [authJwt.verifyToken, authJwt.isModerator],
-  documentCtrl.refreshDocuments
-);
-
-router.delete(
-  "/:documentId",
-  [authJwt.verifyToken, authJwt.isAdmin],
-  documentCtrl.deleteDocumentById
-);
 
 export default router;
