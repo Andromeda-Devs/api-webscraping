@@ -63,11 +63,8 @@ class ClaveUnica {
         );
 
         const data = await res.text();
-
         const dataAsObject = JSON.parse(data);
-
         const profileInfo = dataAsObject.object;
-
         return profileInfo;
 
     }

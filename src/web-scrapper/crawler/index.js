@@ -14,7 +14,7 @@ export class Crawler {
 
         const url = this.url;
 
-        const browser = await puppeteer.launch({ headless : false});
+        const browser = await puppeteer.launch({ headless : true });
     
         const context = await browser.defaultBrowserContext();
     

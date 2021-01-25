@@ -9,13 +9,11 @@ import documentRoutes from "./routes/document.routes";
 import usersRoutes from "./routes/user.routes";
 import authRoutes from "./routes/auth.routes";
 
-import { createRoles, 
-//  createAdmin
-} from "./libs/initialSetup";
+import { createRoles, createAdmin } from "./libs/initialSetup";
 
 const app = express();
 createRoles();
-//createAdmin();
+createAdmin();
 
 // Settings
 app.set("pkg", pkg);
