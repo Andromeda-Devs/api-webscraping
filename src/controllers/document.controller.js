@@ -83,19 +83,25 @@ export const createDocuments = async (req, res) => {
       detail,
       receiver,
   });  
-  res.status(200).json(url);
+  res.status(200).json({ url: url });
  
 };
 
 export const loginClaveUnica = async(req,res) => {
 
-  const {
-    user,
-    password
-  } = req.body;
-
+  if(!req.query.api_key && !req.headers["x-access-token"])
+      return res.status(401).json({ message: "Unauthorized!" });
+    let taxpayers;
+    if(req.query.api_key){
+      const user = await User.findOne({ api_key: req.params.api_key });
+      taxpayers = await getTaxpayers({ rut: user.rut });
+      return res.status(200).json({
+        taxpayers
+      });
+    }
+  const user = await returnUserByToken(req);
   const profile = await claveUnica.login({
-    user,
+    user: user.user_clave_unica,
     password
   });
 
@@ -149,7 +155,7 @@ export const createDocumentsMaster = async (req, res) => {
       detail,
       receiver,
   });  
-  res.status(200).json(url);
+  res.status(200).json({ url: url });
  
 };
 

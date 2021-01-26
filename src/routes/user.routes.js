@@ -2,15 +2,36 @@ import { Router } from "express";
 const router = Router();
 
 import * as usersCtrl from "../controllers/user.controller";
-import { authJwt } from "../middlewares";
+import { authJwt, verifySignup} from "../middlewares";
 
 router.post(
-  "/refresh-api_key",
+  "/refresh-api-key",
   [
-    authJwt.verifyToken
+    authJwt.verifyToken,
+    verifySignup.checkDuplicateUsernameOrEmail,
+    authJwt.isAdmin,
   ],
   usersCtrl.refreshApiKey
 );
+
+router.post(
+  "/create-admin",
+  [
+    authJwt.verifyToken,
+    authJwt.isAdmin,
+  ],
+  usersCtrl.createAdmin,
+);
+
+router.put(
+  "/update",
+  [
+    authJwt.verifyToken,
+  ],
+  usersCtrl.updateUser
+);
+
+
 
 router.get(
   "/",

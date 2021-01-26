@@ -32,9 +32,9 @@ export const isAdmin = async (req, res, next) => {
   if (!token) return res.status(403).json({ message: "No token provided" });
   try {
     const user = await returnUserByToken(req);
-    if (!user) return res.status(404).json({ message: "Unauthorized" });   
+    if (!user) return res.status(401).json({ message: "Unauthorized" });   
     const role = Role.findOne({_id: user.role});
-    if (role.name != "admin") return res.status(404).json({ message: "Unauthorized" });
+    if (role.name != "admin") return res.status(401).json({ message: "Unauthorized,not admin" });
     next();
   } catch (error) {
     return res.status(401).json({ message: "Unauthorized!" });
