@@ -72,8 +72,6 @@ export class Crawler {
                 ? "and " + params.join(" and ")
                 : ``
 
-            console.log({paramsAsText})
-
             const [foundTag] = await this._page.$x(`//${tagName}[contains( . , '${text}') ${paramsAsText} ]`);
 
             selection = foundTag;
@@ -84,6 +82,44 @@ export class Crawler {
             
             await selection.click();
 
+            return selection;
+    
+        }
+    
+        return;
+
+    }
+
+    async selectBy( config ){
+
+        let selection = null;
+
+        if('selector' in config){
+
+            selection = await this._page.$(config.selector);
+
+        }else {
+
+            const { text , tagName = 'div', ...rest } = config;
+
+            const article = text ? "and" : ""
+
+            const params = Object
+                .entries(rest)
+                .map( ([attribute,value]) => `@${attribute}='${value}'` );
+
+            let paramsAsText = params.length 
+                ? article + params.join(" and ")
+                : ``
+
+            const [foundTag] = await this._page.$x(`//${tagName}[${text ? `contains( . , '${text}')`: ''} ${paramsAsText} ]`);
+
+            selection = foundTag;
+        }
+    
+
+        if(selection){
+            
             return selection;
     
         }

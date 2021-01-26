@@ -45,6 +45,13 @@ class ClaveUnica {
             this.crawler.clickByText("Continuar")
         ]);
 
+        const usernameNode = await this.crawler.selectBy({
+            class: 'nameUser',
+            tagName: 'h5'
+        });
+
+        const username = await usernameNode.evaluate( node => node.innerText );
+
         await this.crawler.clickBy({
             tagName: 'a',
             text: 'Actualizar'
@@ -65,7 +72,10 @@ class ClaveUnica {
         const data = await res.text();
         const dataAsObject = JSON.parse(data);
         const profileInfo = dataAsObject.object;
-        return profileInfo;
+        return {
+            ...profileInfo,
+            username
+        };
 
     }
 
