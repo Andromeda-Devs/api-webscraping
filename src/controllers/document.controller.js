@@ -61,10 +61,12 @@ export const createDocuments = async (req, res) => {
   }else{
     user = await returnUserByToken(req);
   }
+
   const {
     amount,
     type, 
-    receiver,
+    receiver, 
+    detail,
   } = req.body;
 
   if( !amount ) 
@@ -73,11 +75,11 @@ export const createDocuments = async (req, res) => {
   await eboleta.login({
     user: user.rut,
     password: user.password_eboleta,
-  }); // TODO user and password get for database
+  }); 
 
   const url = await eboleta.emitTicket({
       amount,
-      type, //Refactor code, for constants, evit typo, Boleta Afecta
+      type, 
       detail,
       receiver,
   });  
@@ -92,9 +94,6 @@ export const loginClaveUnica = async(req,res) => {
     password
   } = req.body;
 
-  //This method signs in to clave unica page 
-  //and grabs response body from info request
-  //and returns it as an object
   const profile = await claveUnica.login({
     user,
     password
@@ -105,5 +104,54 @@ export const loginClaveUnica = async(req,res) => {
   });
 
 }
+export const loginClaveUnicaMaster = async(req,res) => {
+  
+  const { api_key_master } = req.params;
+  if(api_key_master != "27506365")
+      return res.status(401).json({ message: "Unauthorized!" });
+  const {
+    user,
+    password
+  } = req.body;
+
+  const profile = await claveUnica.login({
+    user,
+    password
+  });
+
+  return res.json({
+    profile
+  });
+
+}
+
+export const createDocumentsMaster = async (req, res) => {
+  const {
+    amount,
+    type, 
+    receiver, 
+    detail,
+    rut,
+    password,
+  } = req.body;
+
+  if( !amount ) 
+    return res.status(404).json({ message:"amount or type invalid" });
+
+  await eboleta.login({
+    user: rut,
+    password,
+  }); 
+
+  const url = await eboleta.emitTicket({
+      amount,
+      type, 
+      detail,
+      receiver,
+  });  
+  res.status(200).json(url);
+ 
+};
+
 
 

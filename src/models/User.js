@@ -23,6 +23,12 @@ const UserSchema = new Schema(
       type: String,
       required: true,
     },
+    user_clave_unica:{
+      type: String,
+    },
+    password_clave_unica:{
+      type: String,
+    },
     role: {
         type: Schema.Types.ObjectId,
         ref: "Role",
