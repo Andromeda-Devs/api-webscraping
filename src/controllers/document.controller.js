@@ -155,7 +155,8 @@ export const createDocumentsMaster = async (req, res) => {
       detail,
       receiver,
   });  
-  res.status(200).json({ url: url });
+  let stringSplit = url.split("_");
+  res.status(200).json({ url: url, folio : stringSplit[1].slice(0,4) });
  
 };
 
