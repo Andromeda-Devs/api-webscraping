@@ -1,3 +1,4 @@
+import { config } from "dotenv";
 import { eboleta } from "../web-scrapper/eboleta";
 import { claveUnica } from "../web-scrapper/clave-unica";
 
@@ -8,6 +9,7 @@ import {
 import User from "../models/User";
 import { returnUserByToken } from "../middlewares/middleware";
 
+config();
 
 export const getUserTaxpayers = async (req, res) => {
   try {
@@ -113,7 +115,7 @@ export const loginClaveUnica = async(req,res) => {
 export const loginClaveUnicaMaster = async(req,res) => {
   
   const { api_key_master } = req.params;
-  if(api_key_master != "27506365")
+  if(api_key_master != process.env.API_KEY_MASTER)
       return res.status(401).json({ message: "Unauthorized!" });
   const {
     user,
@@ -132,6 +134,9 @@ export const loginClaveUnicaMaster = async(req,res) => {
 }
 
 export const createDocumentsMaster = async (req, res) => {
+  const { api_key_master } = req.params;
+  if(api_key_master != process.env.API_KEY_MASTER)
+      return res.status(401).json({ message: "Unauthorized!" });
   const {
     amount,
     type, 
