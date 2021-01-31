@@ -161,7 +161,7 @@ export const createDocumentsMaster = async (req, res) => {
       receiver,
   });  
   let stringSplit = url.split("_");
-  res.status(200).json({ url: url, folio : stringSplit[1].slice(0,4) });
+  res.status(200).json({ url: url, folio : stringSplit[1].slice(5,stringSplit[1].length) });
  
 };
 
