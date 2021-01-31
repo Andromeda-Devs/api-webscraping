@@ -135,6 +135,7 @@ export const loginClaveUnicaMaster = async(req,res) => {
 
 export const createDocumentsMaster = async (req, res) => {
   const { api_key_master } = req.params;
+  
   if(api_key_master != process.env.API_KEY_MASTER)
       return res.status(401).json({ message: "Unauthorized!" });
   const {
@@ -161,7 +162,7 @@ export const createDocumentsMaster = async (req, res) => {
       receiver,
   });  
   let stringSplit = url.split("_");
-  res.status(200).json({ url: url, folio : stringSplit[1].slice(5,stringSplit[1].length) });
+  return res.status(200).json({ url: url, folio : stringSplit[1].slice(5,stringSplit[1].length) });
  
 };
 
