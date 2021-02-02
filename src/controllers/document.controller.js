@@ -88,26 +88,21 @@ export const createDocuments = async (req, res) => {
   res.status(200).json({ url: url });
  
 };
-
 export const loginClaveUnica = async(req,res) => {
 
   if(!req.query.api_key && !req.headers["x-access-token"])
-      return res.status(401).json({ message: "Unauthorized!" });
-    let taxpayers;
-    if(req.query.api_key){
-      const user = await User.findOne({ api_key: req.params.api_key });
-      taxpayers = await getTaxpayers({ rut: user.rut });
-      return res.status(200).json({
-        taxpayers
-      });
-    }
-  const user = await returnUserByToken(req);
+    return res.status(401).json({ message: "Unauthorized!" });
+  let user;
+  if(req.query.api_key){
+    user = await User.findOne({ api_key: req.params.api_key });
+  }else {
+    user = await returnUserByToken(req);
+  }
   const profile = await claveUnica.login({
     user: user.user_clave_unica,
     password
   });
-
-  return res.json({
+  return res.status(200).json({
     profile
   });
 
@@ -127,7 +122,7 @@ export const loginClaveUnicaMaster = async(req,res) => {
     password
   });
 
-  return res.json({
+  return res.status(200).json({
     profile
   });
 
