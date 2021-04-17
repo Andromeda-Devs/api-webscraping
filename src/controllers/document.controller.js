@@ -138,28 +138,18 @@ export const createDocumentsMaster = async (req, res) => {
   
   if(api_key_master != process.env.API_KEY_MASTER)
       return res.status(401).json({ message: "Unauthorized!" });
-  const {
-    amount,
-    type, 
-    receiver, 
-    detail,
-    rut,
-    password,
-  } = req.body;
 
-  if( !amount ) 
+
+  if( !req.body.amount ) 
     return res.status(404).json({ message:"amount or type invalid" });
 
   await eboleta.login({
-    user: rut,
-    password,
+    ...req.body,
+    user: req.body.rut,
   }); 
 
   const url = await eboleta.emitTicket({
-      amount,
-      type, 
-      detail,
-      receiver,
+    ...req.body
   });  
   let stringSplit = url.split("_");
   return res.status(200).json({ url: url, folio : stringSplit[1].slice(5,stringSplit[1].length) });

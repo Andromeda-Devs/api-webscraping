@@ -14,7 +14,9 @@ export class Crawler {
 
         const url = this.url;
 
-        const browser = await puppeteer.launch({ headless : true,args: ['--no-sandbox'] });
+        const browser = await puppeteer.launch({ headless : true,
+            args: ['--no-sandbox'] 
+        });
     
         const context = await browser.defaultBrowserContext();
     
