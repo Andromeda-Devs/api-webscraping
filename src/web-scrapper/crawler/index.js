@@ -14,13 +14,16 @@ export class Crawler {
 
         const url = this.url;
 
-        const browser = await puppeteer.launch({ headless : false,
-           args: ['--no-sandbox'] 
-        });
+        const browser =  await puppeteer.launch({
+            headless: true,
+         //   args: ["--no-sandbox"],
+            'ignoreHTTPSErrors': true,
+            timeout: 60000
+          });
     
-        const context = await browser.defaultBrowserContext();
+        // const context = await browser.defaultBrowserContext();
     
-        context.overridePermissions( url , [ "notifications" ] );
+        // context.overridePermissions( url , [ "notifications" ] );
 
         let page = await browser.newPage();
     
