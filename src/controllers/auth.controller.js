@@ -17,7 +17,7 @@ export const signUp = async (req, res) => {
       api_key: uuidv4(),
       password: await User.encryptPassword(password),
     });
-
+    return res.send(newUser);
  
     const role = await Role.findOne({ name: "user" });
      newUser.role = role._id;
@@ -32,8 +32,7 @@ export const signUp = async (req, res) => {
 
     return res.status(200).json({ token, newUser: newUser._doc });
   } catch (error) {
-    console.log(error);
-    return res.status(500).json(error);
+    return res.status(500).send({error});
   }
 };
 
