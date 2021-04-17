@@ -4,11 +4,14 @@ import { v4 as uuidv4 } from "uuid";
 import jwt from "jsonwebtoken";
 import config from "../config";
 
+
 export const signUp = async (req, res) => {
   try {
     // Getting the Request Body
     const {username, email, password, password_eboleta ,rut } = req.body;
     // Creating a new User Object
+    return res.send(req.body);
+
     const newUser = new User({
       username,
       email,
@@ -17,7 +20,6 @@ export const signUp = async (req, res) => {
       api_key: uuidv4(),
       password: await User.encryptPassword(password),
     });
-    return res.send(newUser);
  
     const role = await Role.findOne({ name: "user" });
      newUser.role = role._id;
