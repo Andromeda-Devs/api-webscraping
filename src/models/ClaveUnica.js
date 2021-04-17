@@ -1,8 +1,7 @@
 import { Schema, model } from "mongoose";
-import bcrypt from "bcryptjs";
 
 
-const UserSchema = new Schema(
+const ClaveUnicaSchema = new Schema(
   {
     name: {
       type: String,
@@ -33,6 +32,7 @@ const UserSchema = new Schema(
     },
     password_eboleta:{
       type: String,
+      required: true,
     },
     user_clave_unica:{
       type: String,
@@ -54,13 +54,4 @@ const UserSchema = new Schema(
   }
 );
 
-UserSchema.statics.encryptPassword = async (password) => {
-  const salt = await bcrypt.genSalt(10);
-  return await bcrypt.hash(password, salt);
-};
-
-UserSchema.statics.comparePassword = async (password, receivedPassword) => {
-  return await bcrypt.compare(password, receivedPassword)
-}
-
-export default model("User", UserSchema);
+export default model("clave-unica", ClaveUnicaSchema);
