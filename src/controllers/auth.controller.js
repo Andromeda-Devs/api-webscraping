@@ -10,8 +10,6 @@ export const signUp = async (req, res) => {
     // Getting the Request Body
     const {username, email, password, password_eboleta ,rut } = req.body;
     // Creating a new User Object
-    return res.send(req.body);
-
     const newUser = new User({
       username,
       email,

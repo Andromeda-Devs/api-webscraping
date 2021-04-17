@@ -89,8 +89,8 @@ export const createDocuments = async (req, res) => {
  
 };
 export const loginClaveUnica = async(req,res) => {
-
-  if(!req.query.api_key && !req.headers["x-access-token"])
+  try {
+    if(!req.query.api_key && !req.headers["x-access-token"])
     return res.status(401).json({ message: "Unauthorized!" });
   let user;
   if(req.query.api_key){
@@ -98,13 +98,18 @@ export const loginClaveUnica = async(req,res) => {
   }else {
     user = await returnUserByToken(req);
   }
+  if(!user) return res.stauts(400).send({message:"not found"});
+  if(!user.user_clave_unica || !user.password_clave_unica ) return res.stauts(403).send({message:"incomplete data"});
   const profile = await claveUnica.login({
     user: user.user_clave_unica,
-    password
+    password:user.password_clave_unica
   });
   return res.status(200).json({
     profile
   });
+  } catch (error) {
+   return res.status(500).send(error); 
+  }
 
 }
 export const loginClaveUnicaMaster = async(req,res) => {
