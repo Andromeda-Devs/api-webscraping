@@ -7,7 +7,7 @@
     "dev": "nodemon src/index.js --exec babel-node",
     "build": "babel src --out-dir build",
     "start": "node build/index.js",
-    "postinstall":"npm run build",
+    "postinstall": "npm run build",
     "test": "jest"
   },
   "keywords": [],
@@ -35,7 +35,8 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.10.2",
     "morgan": "^1.10.0",
-    "puppeteer": "^5.5.0",
+    "puppeteer": "^8.0.0",
+    "puppeteer-core": "^8.0.0",
     "uuid": "^8.3.2"
   }
 }

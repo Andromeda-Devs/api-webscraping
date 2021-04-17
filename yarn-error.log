@@ -1,0 +1,75 @@
+Arguments: 
+  /home/casikenegro/.nvm/versions/node/v15.5.0/bin/node /usr/share/yarn/bin/yarn.js add puppeter puppeter-core
+
+PATH: 
+  /home/casikenegro/.nvm/versions/node/v15.5.0/bin:/home/casikenegro/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+
+Yarn version: 
+  1.22.5
+
+Node version: 
+  15.5.0
+
+Platform: 
+  linux x64
+
+Trace: 
+  Error: https://registry.yarnpkg.com/puppeter: Not found
+      at Request.params.callback [as _callback] (/usr/share/yarn/lib/cli.js:66988:18)
+      at Request.self.callback (/usr/share/yarn/lib/cli.js:140749:22)
+      at Request.emit (node:events:376:20)
+      at Request.<anonymous> (/usr/share/yarn/lib/cli.js:141721:10)
+      at Request.emit (node:events:376:20)
+      at IncomingMessage.<anonymous> (/usr/share/yarn/lib/cli.js:141643:12)
+      at Object.onceWrapper (node:events:482:28)
+      at IncomingMessage.emit (node:events:388:22)
+      at endReadableNT (node:internal/streams/readable:1305:12)
+      at processTicksAndRejections (node:internal/process/task_queues:80:21)
+
+npm manifest: 
+  {
+    "name": "api-webscraping",
+    "version": "1.0.0",
+    "description": "",
+    "main": "dist/index.js",
+    "scripts": {
+      "dev": "nodemon src/index.js --exec babel-node",
+      "build": "babel src --out-dir build",
+      "start": "node build/index.js",
+      "postinstall": "npm run build",
+      "test": "jest"
+    },
+    "keywords": [],
+    "author": "andromeda-devs",
+    "license": "ISC",
+    "devDependencies": {
+      "@babel/cli": "^7.11.5",
+      "@babel/core": "^7.11.5",
+      "@babel/node": "^7.10.5",
+      "@babel/plugin-proposal-class-properties": "^7.12.1",
+      "@babel/plugin-transform-classes": "^7.12.1",
+      "@babel/preset-env": "^7.11.5",
+      "babel-plugin-transform-class-properties": "^6.24.1",
+      "jest": "^26.4.2",
+      "nodemon": "^2.0.4",
+      "supertest": "^4.0.2"
+    },
+    "dependencies": {
+      "axios": "^0.21.1",
+      "bcryptjs": "^2.4.3",
+      "cors": "^2.8.5",
+      "dotenv": "^8.2.0",
+      "express": "^4.17.1",
+      "helmet": "^4.1.0",
+      "jsonwebtoken": "^8.5.1",
+      "mongoose": "^5.10.2",
+      "morgan": "^1.10.0",
+      "uuid": "^8.3.2"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
