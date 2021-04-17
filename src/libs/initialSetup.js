@@ -33,6 +33,8 @@ export const createAdmin = async () => {
     // create a new admin user
     await User.create({
       username: "admin",
+      name:"admin",
+      lastname:"admin",
       email: "admin@localhost",
       password: await bcrypt.hash("admin", 10),
       role: role._id,
